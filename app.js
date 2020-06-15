@@ -17,17 +17,11 @@ var campgroundRoutes = require("./routes/campgrounds");
 var authRoutes = require("./routes/index");
 
 // Creating a Database
-mongoose.connect("mongodb+srv://blogadmin:Spidey%40%231995@blog-site-jas1n.mongodb.net/yelp_camp?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useCreateIndex: true
- }).then(()=>{
-    console.log("connected to DB!")
- }).catch(err=>{
-     console.log("ERROR:",err.message);
- });
-// mongoose.connect("mongodb://localhost/yelp_camp");
+// DATABASEURL on heroku. For MONGODB ATLAS
+var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp"
+mongoose.connect(url);
 
-app.use(express.urlencoded({urlencoded:true, extended: true}))
+app.use(express.urlencoded({urlencoded:true, extended: true}));
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/public"))
@@ -65,6 +59,6 @@ app.use("/campgrounds",campgroundRoutes);
 app.use("/campgrounds/:id/comments",commentRoutes);
 
 
-app.listen(3000,function(){
+app.listen(process.env.PORT, process.env.IP,function(){
     console.log("Yelpcamp Server Started.")
 });
