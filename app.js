@@ -27,7 +27,7 @@ mongoose.connect("mongodb+srv://blogadmin:Spidey%40%231995@blog-site-jas1n.mongo
  });
 // mongoose.connect("mongodb://localhost/yelp_camp");
 
-app.use(bodyParser.urlencoded({urlencoded:true}))
+app.use(express.urlencoded({urlencoded:true, extended: true}))
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/public"))
