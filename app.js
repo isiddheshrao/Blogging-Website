@@ -18,7 +18,7 @@ var authRoutes = require("./routes/index");
 
 // Creating a Database
 // DATABASEURL on heroku. For MONGODB ATLAS
-var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp"
+var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp";
 mongoose.connect(url);
 
 app.use(express.urlencoded({urlencoded:true, extended: true}));
