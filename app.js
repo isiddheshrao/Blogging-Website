@@ -17,7 +17,15 @@ var campgroundRoutes = require("./routes/campgrounds");
 var authRoutes = require("./routes/index");
 
 // Creating a Database
-mongoose.connect("mongodb://localhost/yelp_camp");
+mongoose.connect("mongodb+srv://blogadmin:Spidey%40%231995@blog-site-jas1n.mongodb.net/yelp_camp?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useCreateIndex: true
+ }).then(()=>{
+    console.log("connected to DB!")
+ }).catch(err=>{
+     console.log("ERROR:",err.message);
+ });
+// mongoose.connect("mongodb://localhost/yelp_camp");
 
 app.use(bodyParser.urlencoded({urlencoded:true}))
 app.set("view engine", "ejs");
