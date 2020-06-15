@@ -21,7 +21,7 @@ var authRoutes = require("./routes/index");
 var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp";
 mongoose.connect(url);
 
-app.use(express.urlencoded({urlencoded:true, extended: true}));
+app.use(bodyParser.urlencoded({urlencoded:true, extended: true}));
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/public"))
