@@ -44,12 +44,19 @@ router.post("/", middleware.isLoggedIn, function(req,res){
 
 // EDIT COMMENT ROUTE
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req,res){
-    Comment.findById(req.params.comment_id, function(err, foundComm){
-        if(err){
-            res.redirect("back");
-        }else{
-            res.render("comments/edit", {campground_id: req.params.id, comment: foundComm});
+    // Error handling. Check if Camp Exists
+    Campground.findById(req.params.id, function(err, foundCamp){
+        if(err || !foundCamp){
+            req.flash("error","Cannot Find The Blog");
+            return res.redirect("back");
         }
+        Comment.findById(req.params.comment_id, function(err, foundComm){
+            if(err){
+                res.redirect("back");
+            }else{
+                res.render("comments/edit", {campground_id: req.params.id, comment: foundComm});
+            }
+        });
     });
 });
 

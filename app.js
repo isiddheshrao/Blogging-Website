@@ -60,5 +60,5 @@ app.use("/campgrounds/:id/comments",commentRoutes);
 
 
 app.listen(process.env.PORT, process.env.IP,function(){
-    console.log("Yelpcamp Server Started.")
+    console.log("Blog Server Started.")
 });
