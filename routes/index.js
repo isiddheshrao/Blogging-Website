@@ -11,7 +11,8 @@ router.get("/", function(req,res){
 
 // ADDING AUTHENTICATION ROUTES
 router.get("/register", function(req,res){
-    res.render("register");
+    // ALSO PASSING PAGE VARIABLE FROM EJS LOGIN AND REGISTER PAGE
+    res.render("register", {page: 'register'});
 });
 // HANDLE SIGNUP LOGIC
 router.post("/register", function(req,res){
@@ -20,19 +21,20 @@ router.post("/register", function(req,res){
         if(err){
             console.log(err);
             // err IS AN OBJECT AND HAS MESSAGE AS A PARAMETER COMING FORM PASSPORT AUTH
-            req.flash("error",err.message);
-            return res.render("register")
+            // req.flash("error",err.message);
+            // Sorting code to show error on first error
+            return res.render("register", {error: err.message});
         }
         passport.authenticate("local")(req,res, function(){
             req.flash("success","You have registered. Welcome" + user.username);
-            res.redirect("/campgrounds")
+            res.redirect("/campgrounds");
         });
     });
 });
 
 // SHOW LOGIN ROUTE
 router.get("/login", function(req,res){
-    res.render("login");
+    res.render("login", {page: 'login'});
 });
 
 router.post("/login", passport.authenticate("local",{
