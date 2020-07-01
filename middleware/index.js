@@ -17,8 +17,8 @@ MiddleWareObject.checkCommentOwnership = function(req,res,next){
                 req.flash("error","Comment Not Found");
                 res.redirect("back");
             }else{
-                // DOES USER OWN THE COMMENT, IF NOT REDIRECT
-                if (foundComm.author.id.equals(req.user._id)){
+                // DOES USER OWN THE COMMENT OR IS ADMIN, IF NOT REDIRECT
+                if (foundComm.author.id.equals(req.user._id) || req.user.isAdmin){
                     // MOVE AHEAD WITH NEXT CODE AS REQUESTEDs
                     next();
                 }else{
@@ -47,8 +47,8 @@ MiddleWareObject.checkUserOwnership = function(req,res,next){
                 req.flash("error","Campground not Found")
                 res.redirect("back");
             }else{
-                // DOES USER OWN THE CAMP, IF NOT REDIRECT
-                if (foundCamp.author.id.equals(req.user._id)){
+                // DOES USER OWN THE CAMP OR IS ADMIN, IF NOT REDIRECT
+                if (foundCamp.author.id.equals(req.user._id) || req.user.isAdmin){
                     // MOVE AHEAD WITH NEXT CODE AS REQUESTEDs
                     next();
                 }else{

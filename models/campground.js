@@ -7,6 +7,7 @@ var CampgroundSchema = new mongoose.Schema({
     price: String,
     image: String,
     description: String,
+    createdAt:{type: Date, default: Date.now}, //To get content date from moment js
     author: {
         id:{
             type: mongoose.Schema.Types.ObjectId,

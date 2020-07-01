@@ -31,6 +31,9 @@ app.use(flash());
 
 // seedDB(); USE ONLY FOR FALSE SEEDING DB
 
+// ADDING MOMENT CONFIGURATION
+app.locals.moment = require('moment');
+
 // Passport Configuration
 app.use(require("express-session")({
     secret: "The YelpCamp Secret",
@@ -62,3 +65,7 @@ app.use("/campgrounds/:id/comments",commentRoutes);
 app.listen(process.env.PORT, process.env.IP,function(){
     console.log("Blog Server Started.")
 });
+
+// app.listen(3000,function(){
+//     console.log("Blog Server Started.")
+// });
