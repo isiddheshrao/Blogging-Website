@@ -4,15 +4,37 @@ var Campground = require("../models/campground");
 var middleware = require("../middleware/index")
 // CAMPGROUND ROUTES
 
+// DEFING REGEX FUNCTION TO SEARCH DB
+function Regex(text){
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&");
+}
+
 router.get("/", function(req,res){
-    // getting all campgrounds from db
-    Campground.find({},function(err,allcamps){
-        if(err){
-            console.log(err)
-        }else{
-            res.render("campgrounds/index", {campgrounds:allcamps, currentUser: req.user, page: 'campgrounds'});      
-        }
-    });
+    // CHECKING IF USER HAS A SEARCH QUERY (FUZZY SEARCH)
+    var QueryErr;
+    if (req.query.search){
+        const Reg = new RegExp(Regex(req.query.search),'gi');
+        // getting all campgrounds from db matching Reg
+        Campground.find({name: Reg},function(err,allcamps){
+            if(err){
+                console.log(err)
+            }else{
+                if(allcamps.length < 1){
+                    QueryErr = "No Blogs Match That Query!";
+                }
+                res.render("campgrounds/index", {campgrounds:allcamps, QueryErr: QueryErr, currentUser: req.user, page: 'campgrounds'});   
+            }
+        });
+    }else{
+        // getting all campgrounds from db
+        Campground.find({},function(err,allcamps){
+            if(err){
+                console.log(err)
+            }else{
+                res.render("campgrounds/index", {campgrounds:allcamps, QueryErr: QueryErr, currentUser: req.user, page: 'campgrounds'});      
+            }
+        });
+    }
 });
 
 router.post("/new",middleware.isLoggedIn, function(req,res){
