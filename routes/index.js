@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
+var Campground = require("../models/campground");
 var middleware = require("../middleware");
 
 router.get("/", function(req,res){
@@ -16,7 +17,11 @@ router.get("/register", function(req,res){
 });
 // HANDLE SIGNUP LOGIC
 router.post("/register", function(req,res){
-    var newUser = new User({username: req.body.username});
+    var newUser = new User({username: req.body.username, 
+        firstName: req.body.firstname, 
+        lastName: req.body.lastname, 
+        email: req.body.email, 
+        avatar: req.body.avatar});
     // Adding code for admin profile
     if (req.body.adminCode == 'secretcode1234'){
         newUser.isAdmin = true;
@@ -54,6 +59,29 @@ router.get("/logout", function(req,res){
     req.flash("success", "Logged you out");
     res.redirect("/campgrounds");
 });
+
+// USER PROFILE ROUTES
+router.get("/users/:id", function(req,res){
+    User.findById(req.params.id, function(err,foundUser){
+        if(err){
+            console.log(err);
+            req.flash("error","Something Went Wrong");
+            res.redirect("/");
+        }else{
+            // FINDING BLOGS BY USER TOO TO SHOW ON PROFILE PAGE
+            Campground.find().where("author.id").equals(foundUser._id).exec(function(err, camps){
+                if(err){
+                    console.log(err);
+                    req.flash("error","Something Went Wrong");
+                    res.redirect("/");
+                }else{
+                    res.render("users/profile", {user: foundUser, camps: camps});
+                }
+            });
+        }
+    });
+});
+
 
 // export the router
 
